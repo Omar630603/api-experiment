@@ -1,0 +1,51 @@
+# API-Experiment
+
+This is an API project using NodeJS, ExpressJS, and MongoDB. The goal of this project is to try testing API endpoints using Jest and Supertest.
+
+## Features
+
+- Fetch all products
+- Fetch a single product
+- Create a product
+- Update a product
+- Delete a product
+
+## Getting Started
+
+## Installation
+
+`Clone the repository`
+
+```
+npm install
+```
+
+## Usage
+
+`Start for development`
+
+```
+npm run dev
+```
+
+`Start for production`
+
+```
+npm run start
+```
+
+`Run tests`
+
+```
+npm run test
+```
+
+The project can be tested using Postman to check the endpoints.
+
+The endpoints are:
+
+- GET /api/products
+- GET /api/products/:slug
+- POST /api/products
+- PATCH /api/products/:slug
+- DELETE /api/products/:slug
