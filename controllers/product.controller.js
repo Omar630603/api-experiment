@@ -2,11 +2,23 @@ const Product = require("../models/product.model");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().lean().exec();
+    var products;
+
+    if (req.query.search || req.query.price) {
+      const search = req.query.search;
+      const price = req.query.price ?? { minPrice: 0, maxPrice: 0 };
+
+      products = await Product.find({ $and: [await getFilters(search, price)] })
+        .lean()
+        .exec();
+    } else {
+      products = await Product.find().lean().exec();
+    }
 
     if (products.length === 0) {
       return res.status(404).json({ message: "No products found" });
     }
+
     return res.status(200).json({ products, message: "Products found" });
   } catch (error) {
     return res.status(500).json(error);
@@ -33,7 +45,7 @@ const createProduct = async (req, res) => {
   try {
     const FindProduct = await Product.findOne({
       name: req.body.name,
-      price: req.body.price,
+      price: parseInt(req.body.price),
       description: req.body.description,
     })
       .lean()
@@ -47,7 +59,7 @@ const createProduct = async (req, res) => {
 
     const product = await Product.create({
       name: req.body.name,
-      price: req.body.price,
+      price: parseInt(req.body.price),
       description: req.body.description,
     });
 
@@ -94,6 +106,30 @@ const deleteProduct = async (req, res) => {
   } catch (error) {
     return res.status(500).json(error);
   }
+};
+
+const getFilters = async (search, price) => {
+  price.minPrice = price.minPrice ?? 0;
+  price.maxPrice =
+    price.maxPrice == null || price.maxPrice == 0
+      ? (await Product.find().sort({ price: -1 }).limit(1).exec())[0].price
+      : price.maxPrice;
+  var filter = {};
+  search != null
+    ? (filter = {
+        $text: { $search: search },
+        price: {
+          $gte: parseInt(price.minPrice),
+          $lte: parseInt(price.maxPrice),
+        },
+      })
+    : (filter = {
+        price: {
+          $gte: parseInt(price.minPrice),
+          $lte: parseInt(price.maxPrice),
+        },
+      });
+  return filter;
 };
 
 module.exports = {

@@ -130,10 +130,7 @@ describe("POST /api/products", () => {
       description: "Description 4",
     });
     expect(res.statusCode).toBe(500);
-    expect(res.body.errors.price.message).toBe("Price is required");
-    expect(res.body.message).toBe(
-      "Product validation failed: price: Price is required"
-    );
+    expect(res.body.message).toContain("Cast to Number failed");
   });
 
   it("should not create a product because of the description is not provided", async () => {
@@ -247,6 +244,61 @@ describe("DELETE /api/products/:slug", () => {
       );
       expect(res.statusCode).toBe(500);
       await connectDB();
+    });
+  });
+});
+
+describe("GET /api/products with filters", () => {
+  it("should not return any products", async () => {
+    const formData = {
+      search: "John Doe",
+    };
+    const res = await request(app).get("/api/products").query(formData);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toBe("No products found");
+  });
+
+  it("should return one products that fits the minimum price", async () => {
+    const formData = {
+      price: {
+        minPrice: 200,
+      },
+    };
+    const res = await request(app).get("/api/products").query(formData);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe("Products found");
+    expect(res.body.products.length).toBe(1);
+    expect(res.body.products[0].price).toBeGreaterThanOrEqual(200);
+  });
+
+  it("should return one products that fits the maximum price", async () => {
+    const formData = {
+      price: {
+        maxPrice: 1000,
+      },
+    };
+    const res = await request(app).get("/api/products").query(formData);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe("Products found");
+    expect(res.body.products.length).toBe(2);
+    expect(res.body.products[0].price).toBeLessThanOrEqual(1000);
+  });
+
+  it("should return products", async () => {
+    const formData = {
+      search: "Product",
+      price: {
+        minPrice: 200,
+        maxPrice: 1000,
+      },
+    };
+    const res = await request(app).get("/api/products").query(formData);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe("Products found");
+    expect(res.body.products.length).toBe(1);
+    res.body.products.forEach((product) => {
+      expect(product.price).toBeGreaterThanOrEqual(200);
+      expect(product.price).toBeLessThan(1000);
     });
   });
 });

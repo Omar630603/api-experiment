@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-const slug = require("mongoose-slug-generator");
+const mongoose_slug_generator = require("mongoose-slug-generator");
+
 const options = {
   separator: "_",
   lang: "en",
   truncate: 120,
 };
 mongoose.set("strictQuery", false);
-mongoose.plugin(slug, options);
+mongoose.plugin(mongoose_slug_generator, options);
+
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema(
@@ -35,5 +37,7 @@ const productSchema = new Schema(
     collection: "products",
   }
 );
+
+productSchema.index({ name: "text", description: "text" });
 
 module.exports = mongoose.model("Product", productSchema);
