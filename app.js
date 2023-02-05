@@ -1,6 +1,6 @@
 const express = require("express");
 
-const ProductRoutes = require("./routes/product.routes");
+const productRoutes = require("./routes/product.routes");
 
 const app = express();
 
@@ -10,6 +10,6 @@ app.get("/", (req, res) => {
   res.status(200).json({ alive: "True" });
 });
 
-app.use("/api", ProductRoutes);
+app.use("/api/v1", productRoutes);
 
 module.exports = app;

@@ -27,9 +27,9 @@ describe("GET /", () => {
   });
 });
 
-describe("GET /api/products", () => {
+describe("GET /api/v1/products", () => {
   it("should return all products", async () => {
-    const res = await request(app).get("/api/products");
+    const res = await request(app).get("/api/v1/products");
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Products found");
     expect(res.body.products.length).toBeGreaterThan(0);
@@ -47,7 +47,7 @@ describe("GET /api/products", () => {
 
   it("should return no products", async () => {
     await Product.deleteMany();
-    const res = await request(app).get("/api/products");
+    const res = await request(app).get("/api/v1/products");
     expect(res.statusCode).toBe(404);
     expect(res.body.message).toBe("No products found");
     await createProducts();
@@ -55,16 +55,16 @@ describe("GET /api/products", () => {
 
   it("should return error 500", async () => {
     await disconnectDB().then(async () => {
-      const res = await request(app).get("/api/products");
+      const res = await request(app).get("/api/v1/products");
       expect(res.statusCode).toBe(500);
       await connectDB();
     });
   });
 });
 
-describe("GET /api/products/:slug", () => {
+describe("GET /api/v1/products/:slug", () => {
   it("should return one product", async () => {
-    const res = await request(app).get("/api/products/product_2");
+    const res = await request(app).get("/api/v1/products/product_2");
     expect(res.statusCode).toBe(200);
     expect(res.body.product.name).toBe("Product 2");
     expect(res.req.method).toBe("GET");
@@ -72,23 +72,23 @@ describe("GET /api/products/:slug", () => {
   });
 
   it("should return no product", async () => {
-    const res = await request(app).get("/api/products/product_3");
+    const res = await request(app).get("/api/v1/products/product_3");
     expect(res.statusCode).toBe(404);
     expect(res.body.message).toBe("No product found");
   });
 
   it("should return error 500", async () => {
     await disconnectDB().then(async () => {
-      const res = await request(app).get("/api/products/product_2");
+      const res = await request(app).get("/api/v1/products/product_2");
       expect(res.statusCode).toBe(500);
       await connectDB();
     });
   });
 });
 
-describe("POST /api/products", () => {
+describe("POST /api/v1/products", () => {
   it("should create a product", async () => {
-    const res = await request(app).post("/api/products").send({
+    const res = await request(app).post("/api/v1/products").send({
       name: "Product 3",
       price: 1009,
       description: "Description 3",
@@ -100,7 +100,7 @@ describe("POST /api/products", () => {
   });
 
   it("should not create a product because it already exists", async () => {
-    const res = await request(app).post("/api/products").send({
+    const res = await request(app).post("/api/v1/products").send({
       name: "Product 3",
       price: 1009,
       description: "Description 3",
@@ -111,7 +111,7 @@ describe("POST /api/products", () => {
   });
 
   it("should not create a product because of the name is not provided", async () => {
-    const res = await request(app).post("/api/products").send({
+    const res = await request(app).post("/api/v1/products").send({
       name: "",
       price: 1009,
       description: "Description 3",
@@ -124,7 +124,7 @@ describe("POST /api/products", () => {
   });
 
   it("should not create a product because of the price is not provided", async () => {
-    const res = await request(app).post("/api/products").send({
+    const res = await request(app).post("/api/v1/products").send({
       name: "Product 4",
       price: "",
       description: "Description 4",
@@ -134,7 +134,7 @@ describe("POST /api/products", () => {
   });
 
   it("should not create a product because of the description is not provided", async () => {
-    const res = await request(app).post("/api/products").send({
+    const res = await request(app).post("/api/v1/products").send({
       name: "Product 4",
       price: 1009,
       description: "",
@@ -147,7 +147,7 @@ describe("POST /api/products", () => {
   });
 
   it("should not create a product because of the price is less than 0", async () => {
-    const res = await request(app).post("/api/products").send({
+    const res = await request(app).post("/api/v1/products").send({
       name: "Product 4",
       price: -1009,
       description: "Description 4",
@@ -161,7 +161,7 @@ describe("POST /api/products", () => {
 
   it("should return error 500", async () => {
     await disconnectDB().then(async () => {
-      const res = await request(app).post("/api/products").send({
+      const res = await request(app).post("/api/v1/products").send({
         name: "Product 4",
         price: 1009,
         description: "Description 4",
@@ -172,12 +172,12 @@ describe("POST /api/products", () => {
   });
 });
 
-describe("PATCH /api/products/:slug", () => {
+describe("PATCH /api/v1/products/:slug", () => {
   it("should update a product", async () => {
     const FindProduct = await Product.findOne({ slug: "product_3" })
       .lean()
       .exec();
-    const res = await request(app).patch("/api/products/product_3").send({
+    const res = await request(app).patch("/api/v1/products/product_3").send({
       name: "Product 3 updated",
       price: 109,
       description: "Description 3",
@@ -196,7 +196,7 @@ describe("PATCH /api/products/:slug", () => {
   });
 
   it("should not update a product because it does not exist", async () => {
-    const res = await request(app).patch("/api/products/product_4").send({
+    const res = await request(app).patch("/api/v1/products/product_4").send({
       name: "Product 3 updated",
       price: 109,
       description: "Description 3",
@@ -207,7 +207,7 @@ describe("PATCH /api/products/:slug", () => {
 
   it("should return error 500", async () => {
     await disconnectDB().then(async () => {
-      const res = await request(app).patch("/api/products/product_4").send({
+      const res = await request(app).patch("/api/v1/products/product_4").send({
         name: "Product 3 updated",
         price: 109,
         description: "Description 3",
@@ -218,10 +218,10 @@ describe("PATCH /api/products/:slug", () => {
   });
 });
 
-describe("DELETE /api/products/:slug", () => {
+describe("DELETE /api/v1/products/:slug", () => {
   it("should delete a product", async () => {
     const product = await Product.findOne({ slug: "product_3" }).lean().exec();
-    const res = await request(app).delete("/api/products/product_3");
+    const res = await request(app).delete("/api/v1/products/product_3");
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Product deleted");
     expect(res.body.product.name).toBe("Product 3 updated");
@@ -232,7 +232,7 @@ describe("DELETE /api/products/:slug", () => {
   });
 
   it("should not delete a product because it does not exist", async () => {
-    const res = await request(app).delete("/api/products/product_3");
+    const res = await request(app).delete("/api/v1/products/product_3");
     expect(res.statusCode).toBe(404);
     expect(res.body.message).toBe("No product found");
   });
@@ -240,7 +240,7 @@ describe("DELETE /api/products/:slug", () => {
   it("should return error 500", async () => {
     await disconnectDB().then(async () => {
       const res = await request(app).delete(
-        "/api/products/63d6810d0c7579995967eb6d"
+        "/api/v1/products/63d6810d0c7579995967eb6d"
       );
       expect(res.statusCode).toBe(500);
       await connectDB();
@@ -248,12 +248,12 @@ describe("DELETE /api/products/:slug", () => {
   });
 });
 
-describe("GET /api/products with filters", () => {
+describe("GET /api/v1/products with filters", () => {
   it("should not return any products", async () => {
     const formData = {
       search: "John Doe",
     };
-    const res = await request(app).get("/api/products").query(formData);
+    const res = await request(app).get("/api/v1/products").query(formData);
     expect(res.statusCode).toBe(404);
     expect(res.body.message).toBe("No products found");
   });
@@ -264,7 +264,7 @@ describe("GET /api/products with filters", () => {
         minPrice: 200,
       },
     };
-    const res = await request(app).get("/api/products").query(formData);
+    const res = await request(app).get("/api/v1/products").query(formData);
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Products found");
     expect(res.body.products.length).toBe(1);
@@ -277,7 +277,7 @@ describe("GET /api/products with filters", () => {
         maxPrice: 1000,
       },
     };
-    const res = await request(app).get("/api/products").query(formData);
+    const res = await request(app).get("/api/v1/products").query(formData);
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Products found");
     expect(res.body.products.length).toBe(2);
@@ -292,13 +292,13 @@ describe("GET /api/products with filters", () => {
         maxPrice: 1000,
       },
     };
-    const res = await request(app).get("/api/products").query(formData);
+    const res = await request(app).get("/api/v1/products").query(formData);
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Products found");
     expect(res.body.products.length).toBe(1);
     res.body.products.forEach((product) => {
       expect(product.price).toBeGreaterThanOrEqual(200);
-      expect(product.price).toBeLessThan(1000);
+      expect(product.price).toBeLessThanOrEqual(1000);
     });
   });
 });
