@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../app");
+const packages = require("../package.json");
 const Product = require("../models/product.model");
 
 require("dotenv").config();
@@ -18,6 +19,39 @@ beforeAll(async () => {
 });
 
 describe("GET /", () => {
+  it("should have the right packages", (done) => {
+    expect(packages.name).toBe("api-experiment");
+    expect(packages.version).toBe("1.0.0");
+    expect(packages.dependencies).toHaveProperty("cross-env");
+    expect(packages.dependencies).toHaveProperty("dotenv");
+    expect(packages.dependencies).toHaveProperty("express");
+    expect(packages.dependencies).toHaveProperty("jest");
+    expect(packages.dependencies).toHaveProperty("mongoose");
+    expect(packages.dependencies).toHaveProperty("supertest");
+    done();
+  });
+
+  it("should have the right environment variables", (done) => {
+    expect(process.env.MONGODB_URI !== "").toBeTruthy();
+    expect(process.env.NODE_ENV).toBe("test");
+    done();
+  });
+
+  it("should have the right database connection", (done) => {
+    expect(mongoose.connection.readyState).toBe(1);
+    done();
+  });
+
+  it("should have the right database name", (done) => {
+    expect(mongoose.connection.name).toBe("api-experiment-test");
+    done();
+  });
+
+  it("should have the right database collections", (done) => {
+    expect(mongoose.connection.collections).toHaveProperty("products");
+    done();
+  });
+
   it("should return alive", async () => {
     const res = await request(app).get("/");
     expect(res.statusCode).toBe(200);
