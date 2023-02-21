@@ -1,10 +1,8 @@
-API-Experiment
-============
+# API-Experiment
 
 This is an API project using NodeJS, ExpressJS, and MongoDB. The goal of this project is to try testing API endpoints using Jest and Supertest.
 
-Features
-========
+# Features
 
 - Fetch all products
 - Fetch a single product
@@ -12,37 +10,43 @@ Features
 - Update a product
 - Delete a product
 
-Getting Started
-===============
+# Getting Started
 
-Installation
------------
+## Installation
 
-<bold style="color:yellow;">Clone the repository</bold>
+```diff
++ Clone the repository
+```
 
     npm install
 
-Usage
---------
+## Usage
 
-<bold style="color:yellow;">Start for development</bold>
+```diff
++ Start for development
+```
 
     npm run dev
 
-
-<bold style="color:yellow;">Start for production</bold>
+```diff
++ Start for production
+```
 
     npm run start
 
-<bold style="color:yellow;">Run tests</bold>
-    
+```diff
++ Run tests
+```
+
     npm run testA01
     npm run testA02
     npm run testA03
     npm run testA04
-    npm run testA05 
-    npm run testAA 
-----------------
+    npm run testA05
+    npm run testAA
+
+---
+
     A is the project name, and the number is the test number.
     The AA test is to test all the suits in the project.
 
