@@ -1,35 +1,36 @@
 {
   "name": "api-experiment",
   "version": "1.0.0",
-  "description": "Test for express.js and mongoose applications",
+  "description": "NodeJS and MongoDB API application",
   "main": "server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --coverage --testTimeout=20000",
+    "testAA": "cross-env NODE_ENV=test jest --testTimeout=40000 --detectOpenHandles",
+    "testA01": "cross-env NODE_ENV=test jest -i tests/testA01.test.js --testTimeout=5000",
+    "testA02": "cross-env NODE_ENV=test jest -i tests/testA02.test.js --testTimeout=20000",
+    "testA03": "cross-env NODE_ENV=test jest -i tests/testA03.test.js --testTimeout=20000",
+    "testA04": "cross-env NODE_ENV=test jest -i tests/testA04.test.js --testTimeout=20000",
+    "testA05": "cross-env NODE_ENV=test jest -i tests/testA05.test.js --testTimeout=20000",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Omar630603/api-experiment.git"
-  },
   "keywords": [
-    "express.js",
-    "mongoose",
-    "api"
+    "NodeJS",
+    "ExpressJS",
+    "API",
+    "MongoDB"
   ],
-  "author": "Omar Al-Maktary",
+  "author": "omar",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Omar630603/api-experiment/issues"
-  },
-  "homepage": "https://github.com/Omar630603/api-experiment#readme",
-  "dependencies": {
+  "devDependencies": {
     "cross-env": "^7.0.3",
+    "jest": "^29.4.2",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.3"
+  },
+  "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "jest": "^29.3.1",
-    "mongoose": "^6.8.3",
-    "mongoose-slug-generator": "^1.0.4",
-    "supertest": "^6.3.3"
+    "mongoose": "^6.9.2",
+    "mongoose-slug-generator": "^1.0.4"
   }
 }

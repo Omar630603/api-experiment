@@ -53,7 +53,7 @@ const createProduct = async (req, res) => {
 
     if (FindProduct !== null) {
       return res
-        .status(400)
+        .status(409)
         .json({ product: FindProduct, message: "Product already exists" });
     }
 
@@ -74,15 +74,13 @@ const updateProduct = async (req, res) => {
     const filter = { slug: req.params.slug };
     const update = {
       name: req.body.name,
-      price: req.body.price,
+      price: parseInt(req.body.price),
       description: req.body.description,
     };
 
-    await Product.findOneAndUpdate(filter, update, {
-      new: false,
+    const product = await Product.findOneAndUpdate(filter, update, {
+      new: true,
     });
-
-    const product = await Product.findOne({ slug: req.params.slug });
 
     if (product === null) {
       return res.status(404).json({ message: "No product found" });

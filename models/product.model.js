@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const mongoose_slug_generator = require("mongoose-slug-generator");
 
 const options = {
-  separator: "_",
+  separator: "-",
   lang: "en",
   truncate: 120,
 };
-mongoose.set("strictQuery", false);
+
 mongoose.plugin(mongoose_slug_generator, options);
 
 const Schema = mongoose.Schema;
