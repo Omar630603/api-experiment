@@ -14,29 +14,21 @@ This is an API project using NodeJS, ExpressJS, and MongoDB. The goal of this pr
 
 ## Installation
 
-```diff
-+ Clone the repository
-```
+Clone the repository
 
     npm install
 
 ## Usage
 
-```diff
-+ Start for development
-```
+Start for development
 
     npm run dev
 
-```diff
-+ Start for production
-```
+Start for production
 
     npm run start
 
-```diff
-+ Run tests
-```
+Run tests
 
     npm run testA01
     npm run testA02
@@ -45,7 +37,6 @@ This is an API project using NodeJS, ExpressJS, and MongoDB. The goal of this pr
     npm run testA05
     npm run testAA
 
----
 
     A is the project name, and the number is the test number.
     The AA test is to test all the suits in the project.
@@ -54,8 +45,8 @@ The project can be tested using Postman to check the endpoints.
 
 The endpoints are:
 
-- GET /api/products
-- GET /api/products/:slug
-- POST /api/products
-- PATCH /api/products/:slug
-- DELETE /api/products/:slug
+- GET /api/v1/products
+- GET /api/v1/products/:slug
+- POST /api/v1/products
+- PATCH /api/v1/products/:slug
+- DELETE /api/v1/products/:slug
