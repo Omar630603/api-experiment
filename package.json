@@ -4,7 +4,7 @@
   "description": "NodeJS and MongoDB API application",
   "main": "server.js",
   "scripts": {
-    "testAA": "cross-env NODE_ENV=test jest --coverage --testTimeout=40000 --detectOpenHandles",
+    "testAA": "cross-env NODE_ENV=test jest --testTimeout=40000 --detectOpenHandles",
     "testA01": "cross-env NODE_ENV=test jest -i tests/testA01.test.js --testTimeout=5000",
     "testA02": "cross-env NODE_ENV=test jest -i tests/testA02.test.js --testTimeout=20000",
     "testA03": "cross-env NODE_ENV=test jest -i tests/testA03.test.js --testTimeout=20000",
