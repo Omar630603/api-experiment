@@ -1,29 +1,35 @@
 const express = require("express");
 const apiProductRoutes = require("./routes/api/product.routes");
-const webProductRoutes = require("./routes/web/products.routes");
-const app = express();
+const webProductRoutes = require("./routes/web/product.routes");
 const path = require("path");
+const ejsLayouts = require("express-ejs-layouts");
+const app = express();
+
+app.use(express.static(path.join(__dirname, "web")));
+app.use(ejsLayouts);
+
+app.set("layout", path.join(__dirname, "web", "layouts", "main"));
+app.set("views", path.join(__dirname, "web", "views"));
+app.set("view engine", "ejs");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/styles", express.static(path.join(__dirname, "web", "styles")));
-app.set("views", path.join(__dirname, "web", "views"));
-app.set("view engine", "ejs");
-
 app.get("/", (req, res) => {
-  try {
-    if (req.query.message) {
-      return res.render("index", { message: req.query.message });
-    } else {
-      return res.render("index");
-    }
-  } catch (err) {
-    return res.render("error", err);
+  if (req.query.message) {
+    return res.render("index", {
+      title: "API-Experiment | Home",
+      message: req.query.message,
+    });
+  } else {
+    return res.render("index", {
+      title: "API-Experiment | Home",
+    });
   }
 });
 
-app.use("/", webProductRoutes);
+app.use("/api/v1", apiProductRoutes);
+app.use("/products", webProductRoutes);
 
 app.get("/api/v1/test", (req, res) => {
   if (req.body.message) {
@@ -32,7 +38,5 @@ app.get("/api/v1/test", (req, res) => {
     res.status(200).json({ alive: "True" });
   }
 });
-
-app.use("/api/v1", apiProductRoutes);
 
 module.exports = app;

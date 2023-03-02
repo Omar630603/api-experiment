@@ -1,48 +1,66 @@
 const Product = require("../../models/product.model");
 
 const getProducts = async (req, res) => {
-  try {
-    var products;
+  var products;
 
-    if (req.query.search || req.query.price) {
-      const search = req.query.search;
-      const price = req.query.price ?? { minPrice: 0, maxPrice: 0 };
+  if (req.query.search || req.query.price) {
+    const search = req.query.search;
+    const price = req.query.price ?? { minPrice: 0, maxPrice: 0 };
 
-      products = await Product.find({ $and: [await getFilters(search, price)] })
-        .lean()
-        .exec();
-    } else {
-      products = await Product.find().lean().exec();
-    }
-
-    if (products.length === 0) {
-      return res.status(404).json({ message: "No products found" });
-    }
-
-    return res.status(200).json({ products, message: "Products found" });
-  } catch (error) {
-    return res.status(500).json(error);
+    products = await Product.find({ $and: [await getFilters(search, price)] })
+      .lean()
+      .exec();
+  } else {
+    products = await Product.find().lean().exec();
   }
+
+  if (products.length === 0) {
+    return res.render("products/index", {
+      title: "API-Experiment | Products",
+      products: [],
+    });
+  }
+
+  return res.render("products/index", {
+    title: "API-Experiment | Products",
+    products: products,
+    message: req.query.message,
+  });
 };
 
 const getProduct = async (req, res) => {
-  try {
-    const product = await Product.findOne({ slug: req.params.slug })
-      .lean()
-      .exec();
+  const product = await Product.findOne({ slug: req.params.slug })
+    .lean()
+    .exec();
 
-    if (product === null) {
-      return res.status(404).json({ message: "No product found" });
-    }
-
-    res.status(200).json({ product, message: "Product found" });
-  } catch (error) {
-    res.status(500).json(error);
+  if (product === null) {
+    const error = { status: 404, message: "No product found" };
+    return res.render("error", { title: "API-Experiment | Error", error });
   }
+
+  res.render("products/details", {
+    title: "API-Experiment | Product",
+    product,
+    message: req.query.message,
+  });
 };
 
 const createProduct = async (req, res) => {
-  try {
+  if (req.method === "GET") {
+    return res.render("products/create", {
+      title: "API-Experiment | Create Product",
+    });
+  } else {
+    if (
+      req.body.name === "" ||
+      req.body.price === "" ||
+      req.body.description === ""
+    ) {
+      return res.render("products/create", {
+        title: "API-Experiment | Create Product",
+        message: "Please fill all fields",
+      });
+    }
     const FindProduct = await Product.findOne({
       name: req.body.name,
       price: parseInt(req.body.price),
@@ -52,68 +70,84 @@ const createProduct = async (req, res) => {
       .exec();
 
     if (FindProduct !== null) {
-      return res
-        .status(409)
-        .json({ product: FindProduct, message: "Product already exists" });
+      return res.render("products/create", {
+        title: "API-Experiment | Create Product",
+        message: "Product already exists",
+      });
     }
 
-    const product = await Product.create({
+    await Product.create({
       name: req.body.name,
       price: parseInt(req.body.price),
       description: req.body.description,
     });
 
-    return res.status(201).json({ product, message: "Product created" });
-  } catch (error) {
-    return res.status(500).json(error);
+    req.query.message = "Product created";
+    return await getProducts(req, res);
   }
 };
 
 const updateProduct = async (req, res) => {
-  try {
-    const filter = { slug: req.params.slug };
-    const update = {
-      name: req.body.name,
-      price: parseInt(req.body.price),
-      description: req.body.description,
-    };
-
-    const product = await Product.findOneAndUpdate(filter, update, {
-      new: true,
+  if (req.method === "GET") {
+    const product = await Product.findOne({ slug: req.params.slug })
+      .lean()
+      .exec();
+    return res.render("products/update", {
+      title: "API-Experiment | Update Product",
+      product,
     });
-
-    if (product === null) {
-      return res.status(404).json({ message: "No product found" });
+  } else {
+    if (
+      req.body.name === "" ||
+      req.body.price === "" ||
+      req.body.description === ""
+    ) {
+      return res.render("products/update", {
+        title: "API-Experiment | Update Product",
+        message: "Please fill all fields",
+      });
     }
 
-    return res.status(200).json({ product, message: "Product updated" });
-  } catch (error) {
-    return res.status(500).json(error);
+    const product = await Product.findOneAndUpdate(
+      { slug: req.params.slug },
+      {
+        name: req.body.name,
+        price: parseInt(req.body.price),
+        description: req.body.description,
+      },
+      { new: true }
+    );
+
+    if (product === null) {
+      const error = { status: 404, message: "No product found" };
+      return res.render("error", { error });
+    }
+
+    req.query.message = "Product updated";
+    return await getProduct(req, res);
   }
 };
 
 const deleteProduct = async (req, res) => {
-  try {
-    const product = await Product.findOneAndDelete({ slug: req.params.slug });
+  const product = await Product.findOneAndDelete({ slug: req.params.slug });
 
-    if (product === null) {
-      return res.status(404).json({ message: "No product found" });
-    }
-
-    return res.status(200).json({ product, message: "Product deleted" });
-  } catch (error) {
-    return res.status(500).json(error);
+  if (product === null) {
+    const error = { status: 404, message: "No product found" };
+    return res.render("error", { title: "API-Experiment | Error", error });
   }
+
+  req.query.message = "Product deleted";
+  return await getProducts(req, res);
 };
 
 const getFilters = async (search, price) => {
-  price.minPrice = price.minPrice ?? 0;
+  price.minPrice = price.minPrice == "" ? 0 : price.minPrice;
   price.maxPrice =
-    price.maxPrice == null || price.maxPrice == 0
+    price.maxPrice == "" || price.maxPrice == 0
       ? (await Product.find().sort({ price: -1 }).limit(1).exec())[0].price
       : price.maxPrice;
   var filter = {};
-  search != null
+  search != ""
     ? (filter = {
         $text: { $search: search },
         price: {
