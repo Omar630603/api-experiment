@@ -13,6 +13,11 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-expect-message"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Omar630603/api-experiment.git"
