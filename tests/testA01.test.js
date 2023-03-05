@@ -35,6 +35,9 @@ describe("Testing application configuration", () => {
     expect(packages.devDependencies).toHaveProperty("jest");
     expect(packages.devDependencies).toHaveProperty("nodemon");
     expect(packages.devDependencies).toHaveProperty("supertest");
+    expect(packages.devDependencies).toHaveProperty("jest-image-snapshot");
+    expect(packages.devDependencies).toHaveProperty("jest-expect-message");
+    expect(packages.devDependencies).toHaveProperty("puppeteer");
     expect(packages.dependencies).toHaveProperty("dotenv");
     expect(packages.dependencies).toHaveProperty("express");
     expect(packages.dependencies).toHaveProperty("mongoose");

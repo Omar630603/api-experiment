@@ -1,5 +1,3 @@
-// test the ejs template for the index page
-
 const request = require("supertest");
 const app = require("../app");
 const puppeteer = require("puppeteer");
@@ -53,6 +51,33 @@ describe("Testing the index page with puppeteer", () => {
     await page.goto(`http://localhost:${process.env.PORT}/?message=Hello test`);
     const message = await page.$eval(".message", (el) => el.textContent);
     expect(message).toBe("Hello test");
+  });
+
+  it("the products button should have the right styling", async () => {
+    await page.goto(`http://localhost:${process.env.PORT}/`);
+    const backgroundColor = await page.evaluate(() => {
+      const button = document.querySelector(".btn.btn-primary");
+      const style = window.getComputedStyle(button);
+      return style.getPropertyValue("background-color");
+    });
+    expect(backgroundColor).toBe("rgb(0, 161, 189)");
+  });
+
+  it("matches the expected styling", async () => {
+    await page.goto(`http://localhost:${process.env.PORT}/`);
+    const button = await page.$(".btn.btn-primary");
+    const screenshot = await button.screenshot({
+      boundingBox: await button.boundingBox(),
+    });
+    expect(
+      screenshot,
+      `The web styling for the index page is not correct check the file "/tests/images/__image_snapshots_A01__/__diff_output__/index-page-button-styling-diff.png" to find the difference`,
+      options
+    ).toMatchImageSnapshot({
+      customDiffConfig: { threshold: 0.1 },
+      customSnapshotsDir: "tests/images/__image_snapshots_A01__",
+      customSnapshotIdentifier: "index-page-button-styling",
+    });
   });
 
   it("matches the expected styling", async () => {
