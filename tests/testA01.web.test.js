@@ -79,8 +79,8 @@ describe("Testing the index page with puppeteer", () => {
       options
     ).toMatchImageSnapshot({
       customDiffConfig: { threshold: 0.1 },
-      customSnapshotsDir: "tests/images/__image_snapshots_A01__",
-      customSnapshotIdentifier: "index-page-button-styling",
+      customSnapshotsDir: "tests/images",
+      customSnapshotIdentifier: "index-page-button-products",
     });
   });
 
@@ -93,8 +93,8 @@ describe("Testing the index page with puppeteer", () => {
       options
     ).toMatchImageSnapshot({
       customDiffConfig: { threshold: 0.1 },
-      customSnapshotsDir: "tests/images/__image_snapshots_A01__",
-      customSnapshotIdentifier: "index-page-styling",
+      customSnapshotsDir: "tests/images",
+      customSnapshotIdentifier: "index-page",
     });
   });
 
@@ -110,5 +110,20 @@ describe("Testing the index page with puppeteer", () => {
     await page.click(".btn.btn-primary");
     const url = await page.url();
     expect(url).toBe(`http://localhost:${process.env.PORT}/products`);
+  });
+
+  it("match index-page snapshot", async () => {
+    await page.goto(`http://localhost:${process.env.PORT}/`);
+    const html = await page.content();
+    expect(html).toMatchSnapshot("index-page");
+  });
+
+  it("matches the products button snapshot", async () => {
+    await page.goto(`http://localhost:${process.env.PORT}/`);
+    const html = await page.evaluate(() => {
+      const button = document.querySelector(".btn.btn-primary");
+      return button.outerHTML;
+    });
+    expect(html).toMatchSnapshot("products-button");
   });
 });

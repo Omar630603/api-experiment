@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing the index page with puppeteer match index-page snapshot: index-page 1`] = `
+"<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>API-Experiment | Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/main.css" type="text/css">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Products</a></li>
+      </ul>
+    </nav>
+    <main><div class="container">
+  <h1 class="title">Welcome to my beautiful web page!</h1>
+  
+  <div class="alert alert-warning">
+    <p class="message">
+      Type a value for the property message next to this page URL
+      <br>
+      /?message=Hello
+    </p>
+  </div>
+  
+</div>
+
+<div class="container flex-col-container">
+  <h2 class="subtitle">I can show products from my database in MongoDB</h2>
+  <p class="description">Click on this button below to go the products page</p>
+  <a href="/products" class="btn btn-primary">Products</a>
+</div>
+</main>
+  
+
+</body></html>"
+`;
+
+exports[`Testing the index page with puppeteer matches the products button snapshot: products-button 1`] = `"<a href="/products" class="btn btn-primary">Products</a>"`;
