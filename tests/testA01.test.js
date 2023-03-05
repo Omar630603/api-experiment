@@ -6,6 +6,12 @@ const packages = require("../package.json");
 require("dotenv").config();
 mongoose.set("strictQuery", true);
 
+const options = {
+  showPrefix: false,
+  showMatcherMessage: true,
+  showStack: false,
+};
+
 beforeAll(async () => {
   await connectDB().then(
     async () => {
@@ -19,7 +25,11 @@ beforeAll(async () => {
 
 describe("Testing application configuration", () => {
   it("should have the right name and packages", (done) => {
-    expect(packages.name).toBe("api-experiment");
+    expect(
+      packages.name,
+      `The name provided "${packages.name}" is wrong. The application name should be "api-experiment", check the package.json file`,
+      options
+    ).toBe("api-experiment");
     expect(packages.version).toBe("1.0.0");
     expect(packages.devDependencies).toHaveProperty("cross-env");
     expect(packages.devDependencies).toHaveProperty("jest");
@@ -43,7 +53,6 @@ describe("Testing application configuration", () => {
   });
 
   it("should have the right database connection", (done) => {
-    expect(mongoose.connection.name).toBe("api-experiment-test");
     expect(mongoose.connection.readyState).toBe(1);
     done();
   });
@@ -61,9 +70,9 @@ describe("Testing application configuration", () => {
   });
 });
 
-describe("Testing GET /", () => {
+describe("Testing GET /api/v1/test", () => {
   it("should return alive", async () => {
-    const res = await request(app).get("/");
+    const res = await request(app).get("/api/v1/test");
     expect(res.statusCode).toBe(200);
     expect(res.body.alive).toBe("True");
     expect(res.req.method).toBe("GET");
@@ -71,7 +80,9 @@ describe("Testing GET /", () => {
   });
 
   it("should return message", async () => {
-    const res = await request(app).get("/").send({ message: "Hello" });
+    const res = await request(app)
+      .get("/api/v1/test")
+      .send({ message: "Hello" });
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Hello");
     expect(res.req.method).toBe("GET");

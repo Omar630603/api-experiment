@@ -39,4 +39,9 @@ app.get("/api/v1/test", (req, res) => {
   }
 });
 
+app.use((req, res, next) => {
+  const error = { status: 404, message: "NOT FOUND" };
+  return res.render("error", { title: "API-Experiment | Error", error });
+});
+
 module.exports = app;
