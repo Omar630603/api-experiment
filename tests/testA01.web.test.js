@@ -18,6 +18,10 @@ beforeAll(async () => {
     headless: true,
     slowMo: 0,
     devtools: false,
+    defaultViewport: {
+      width: 1024,
+      height: 768,
+    },
   });
   page = await browser.newPage();
   await page.setDefaultTimeout(10000);
