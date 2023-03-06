@@ -18,7 +18,8 @@
     "setupFilesAfterEnv": [
       "jest-expect-message"
     ],
-    "ci": true
+    "noStackTrace": true,
+    "silent": true
   },
   "repository": {
     "type": "git",

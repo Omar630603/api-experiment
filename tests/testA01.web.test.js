@@ -51,13 +51,19 @@ describe("Testing the index page with puppeteer", () => {
 
   it("should have the right title", async () => {
     const title = await page.title();
-    expect(title).toBe("API-Experiment | Home");
+    expect(title, "The title for the web page is wrong", options).toBe(
+      "API-Experiment | Home"
+    );
   });
 
   it("should receive a message and display it", async () => {
     await page.goto(`http://localhost:${process.env.PORT}/?message=Hello test`);
     const message = await page.$eval(".message", (el) => el.textContent);
-    expect(message).toBe("Hello test");
+    expect(
+      message,
+      `the message "${message}" received is wrong it should be "Hello test"`,
+      options
+    ).toBe("Hello test");
   });
 
   it("the products button should have the right styling", async () => {
@@ -76,7 +82,7 @@ describe("Testing the index page with puppeteer", () => {
     });
     expect(
       screenshot,
-      `The web styling for the index page is not correct check the file "/tests/images/__image_snapshots_A01__/__diff_output__/index-page-button-styling-diff.png" to find the difference`,
+      `The web styling for the index page is not correct check the file "/tests/images/__diff_output__/index-page-button-products-diff.png" to find the difference`,
       options
     ).toMatchImageSnapshot({
       customDiffConfig: { threshold: 0.1 },
@@ -89,7 +95,7 @@ describe("Testing the index page with puppeteer", () => {
     const screenshot = await page.screenshot({ fullPage: true });
     expect(
       screenshot,
-      `The web styling for the index page is not correct check the file "/tests/images/__image_snapshots_A01__/__diff_output__/index-page-styling-diff.png" to find the difference`,
+      `The web styling for the index page is not correct check the file "/tests/images/__diff_output__/index-page-diff.png" to find the difference`,
       options
     ).toMatchImageSnapshot({
       customDiffConfig: { threshold: 0.1 },
