@@ -45,8 +45,11 @@ describe("Testing the index page", () => {
 });
 
 describe("Testing the index page with puppeteer", () => {
-  it("should have the right title", async () => {
+  beforeEach(async () => {
     await page.goto(`http://localhost:${process.env.PORT}/`);
+  });
+
+  it("should have the right title", async () => {
     const title = await page.title();
     expect(title).toBe("API-Experiment | Home");
   });
@@ -58,7 +61,6 @@ describe("Testing the index page with puppeteer", () => {
   });
 
   it("the products button should have the right styling", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     const backgroundColor = await page.evaluate(() => {
       const button = document.querySelector(".btn.btn-primary");
       const style = window.getComputedStyle(button);
@@ -68,7 +70,6 @@ describe("Testing the index page with puppeteer", () => {
   });
 
   it("matches the expected styling", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     const button = await page.$(".btn.btn-primary");
     const screenshot = await button.screenshot({
       boundingBox: await button.boundingBox(),
@@ -85,7 +86,6 @@ describe("Testing the index page with puppeteer", () => {
   });
 
   it("matches the expected styling", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     const screenshot = await page.screenshot({ fullPage: true });
     expect(
       screenshot,
@@ -99,27 +99,23 @@ describe("Testing the index page with puppeteer", () => {
   });
 
   it("should have nav bar with 2 links", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     const navBar = await page.$eval("nav", (el) => el.textContent);
     expect(navBar).toContain("Home");
     expect(navBar).toContain("Products");
   });
 
   it("should have a button to the products page", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     await page.click(".btn.btn-primary");
     const url = await page.url();
     expect(url).toBe(`http://localhost:${process.env.PORT}/products`);
   });
 
   it("match index-page snapshot", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     const html = await page.content();
     expect(html).toMatchSnapshot("index-page");
   });
 
   it("matches the products button snapshot", async () => {
-    await page.goto(`http://localhost:${process.env.PORT}/`);
     const html = await page.evaluate(() => {
       const button = document.querySelector(".btn.btn-primary");
       return button.outerHTML;
