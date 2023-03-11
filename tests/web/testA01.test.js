@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../app");
+const app = require("../../app");
 const puppeteer = require("puppeteer");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
 expect.extend({ toMatchImageSnapshot });
