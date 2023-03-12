@@ -22,7 +22,7 @@
     "setupFilesAfterEnv": [
       "jest-expect-message"
     ],
-    "noStackTrace": false,
+    "noStackTrace": true,
     "silent": false
   },
   "repository": {
@@ -35,7 +35,7 @@
     "API",
     "MongoDB"
   ],
-  "author": "omar",
+  "author": "Omar630603",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Omar630603/api-experiment/issues"

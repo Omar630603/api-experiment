@@ -10,9 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "web")));
 app.use(ejsLayouts);
 
-app.set("layout", path.join(__dirname, "web", "layouts", "main"));
-app.set("views", path.join(__dirname, "web", "views"));
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "web", "views"));
+app.set("layout", path.join(__dirname, "web", "layouts", "main"));
 
 app.get("/", (req, res) => {
   if (req.query.message) {
