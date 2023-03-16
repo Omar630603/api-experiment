@@ -29,17 +29,17 @@ describe("GET /api/v1/products", () => {
     const res = await request(app).get("/api/v1/products");
     expect(
       res.statusCode,
-      `When calling GET /api/v1/products, the status code should be 200, but it was ${res.statusCode}, update your code to return 200`,
+      `When calling GET /api/v1/products, the status code should be "200", but it was "${res.statusCode}", update your code to return 200`,
       options
     ).toBe(200);
     expect(
       res.body.message,
-      `When calling GET /api/v1/products, the message should be "Products found", but it was ${res.body.message}, update your code to return "Products found"`,
+      `When calling GET /api/v1/products, the message should be "Products found", but it was "${res.body.message}", update your code to return "Products found"`,
       options
     ).toBe("Products found");
     expect(
       res.body.products.length,
-      `When calling GET /api/v1/products, the products array should return more than 0 products, but it was ${res.body.products.length}, update your code to return more than 0 products`,
+      `When calling GET /api/v1/products, the products array should return more than 0 products, but it was "${res.body.products.length}", update your code to return more than 0 products`,
       options
     ).toBeGreaterThan(0);
     expect(
@@ -50,12 +50,12 @@ describe("GET /api/v1/products", () => {
     ).toBeTruthy();
     expect(
       res.req.method,
-      `When calling GET /api/v1/products, the method should be "GET", but it was ${res.req.method}, update the method to be "GET"`,
+      `When calling GET /api/v1/products, the method should be "GET", but it was "${res.req.method}", update the method to be "GET"`,
       options
     ).toBe("GET");
     expect(
       res.type,
-      `When calling GET /api/v1/products, the content type should be "application/json", but it was ${res.type}, update the content type to be "application/json"`,
+      `When calling GET /api/v1/products, the content type should be "application/json", but it was "${res.type}", update the content type to be "application/json"`,
       options
     ).toBe("application/json");
   });
@@ -66,7 +66,7 @@ describe("GET /api/v1/products", () => {
         const products = await Product.find();
         expect(
           products.length,
-          `The database should contain all the 10 products from the initial_data.json file, but it was ${products.length}, use the initial_data.json file to add more products to the api-experiment database`,
+          `The database should contain all the "10 products" from the initial_data.json file, but it was "${products.length}", use the initial_data.json file to add more products to the api-experiment database`,
           options
         ).toEqual(10);
         await disconnectDB().then(async () => {
@@ -81,12 +81,12 @@ describe("GET /api/v1/products", () => {
     const res = await request(app).get("/api/v1/products");
     expect(
       res.statusCode,
-      `The status code should be 404 because there are no products, but it was ${res.statusCode}, update the status code to be 404 when there are no products`,
+      `The status code should be "404" because there are no products, but it was "${res.statusCode}", update the status code to be 404 when there are no products`,
       options
     ).toBe(404);
     expect(
       res.body.message,
-      `The message should be "No products found" because there are no products, but it was ${res.body.message}, update the message to be "No products found" when there are no products`,
+      `The message should be "No products found" because there are no products, but it was "${res.body.message}", update the message to be "No products found" when there are no products`,
       options
     ).toBe("No products found");
     await createProducts();
@@ -110,7 +110,7 @@ describe("GET /api/v1/product/:slug", () => {
     const res = await request(app).get("/api/v1/product/product-2");
     expect(
       res.statusCode,
-      `When calling GET /api/v1/product/:slug, the status code should be 200, but it was ${res.statusCode}, update your code to return 200`
+      `When calling GET /api/v1/product/:slug, the status code should be "200", but it was "${res.statusCode}", update your code to return 200`
     ).toBe(200);
     expect(
       res.body.product.name,
@@ -119,12 +119,12 @@ describe("GET /api/v1/product/:slug", () => {
     ).toBe("Product 2");
     expect(
       res.req.method,
-      `When calling GET /api/v1/product/:slug, the method should be "GET", but it was ${res.req.method}, update the method to be "GET"`,
+      `When calling GET /api/v1/product/:slug, the method should be "GET", but it was "${res.req.method}", update the method to be "GET"`,
       options
     ).toBe("GET");
     expect(
       res.type,
-      `When calling GET /api/v1/product/:slug, the content type should be "application/json", but it was ${res.type}, update the content type to be "application/json"`,
+      `When calling GET /api/v1/product/:slug, the content type should be "application/json", but it was "${res.type}", update the content type to be "application/json"`,
       options
     ).toBe("application/json");
   });
@@ -133,12 +133,12 @@ describe("GET /api/v1/product/:slug", () => {
     const res = await request(app).get("/api/v1/product/product-3");
     expect(
       res.statusCode,
-      `The status code should be 404 because there is no product, but it was ${res.statusCode}, update the status code to be 404 when there is no product found`,
+      `The status code should be "404" because there is no product, but it was "${res.statusCode}", update the status code to be 404 when there is no product found`,
       options
     ).toBe(404);
     expect(
       res.body.message,
-      `The message should be "No product found" because there is no product, but it was ${res.body.message}, update the message to be "No product found" when there is no product found`,
+      `The message should be "No product found" because there is no product, but it was "${res.body.message}", update the message to be "No product found" when there is no product found`,
       options
     ).toBe("No product found");
   });
@@ -164,12 +164,12 @@ describe("GET /api/v1/products with filters", () => {
     const res = await request(app).get("/api/v1/products").query(formData);
     expect(
       res.statusCode,
-      `When applying search filters, if there are no products matching the search query, the status code should be "404". but it was ${res.statusCode}, update your code to return "404" when there are no products matching the search query`,
+      `When applying search filters, if there are no products matching the search query, the status code should be "404". but it was "${res.statusCode}", update your code to return "404" when there are no products matching the search query`,
       options
     ).toBe(404);
     expect(
       res.body.message,
-      `When applying search filters, if there are no products matching the search query, the message should be "No products found". but it was ${res.body.message}, update your code to return "No products found" when there are no products matching the search query`,
+      `When applying search filters, if there are no products matching the search query, the message should be "No products found". but it was "${res.body.message}", update your code to return "No products found" when there are no products matching the search query`,
       options
     ).toBe("No products found");
   });
@@ -183,12 +183,12 @@ describe("GET /api/v1/products with filters", () => {
     const res = await request(app).get("/api/v1/products").query(formData);
     expect(
       res.statusCode,
-      `When applying price filters, if there are products matching the price query, the status code should be "200". but it was ${res.statusCode}, update your code to return "200" when there are products matching the price query`,
+      `When applying price filters, if there are products matching the price query, the status code should be "200". but it was "${res.statusCode}", update your code to return "200" when there are products matching the price query`,
       options
     ).toBe(200);
     expect(
       res.body.message,
-      `When applying price filters, if there are products matching the price query, the message should be "Products found". but it was ${res.body.message}, update your code to return "Products found" when there are products matching the price query`,
+      `When applying price filters, if there are products matching the price query, the message should be "Products found". but it was "${res.body.message}", update your code to return "Products found" when there are products matching the price query`,
       options
     ).toBe("Products found");
     expect(
@@ -212,12 +212,12 @@ describe("GET /api/v1/products with filters", () => {
     const res = await request(app).get("/api/v1/products").query(formData);
     expect(
       res.statusCode,
-      `When applying price filters, if there are products matching the price query, the status code should be "200". but it was ${res.statusCode}, update your code to return "200" when there are products matching the price query`,
+      `When applying price filters, if there are products matching the price query, the status code should be "200". but it was "${res.statusCode}", update your code to return "200" when there are products matching the price query`,
       options
     ).toBe(200);
     expect(
       res.body.message,
-      `When applying price filters, if there are products matching the price query, the message should be "Products found". but it was ${res.body.message}, update your code to return "Products found" when there are products matching the price query`,
+      `When applying price filters, if there are products matching the price query, the message should be "Products found". but it was "${res.body.message}", update your code to return "Products found" when there are products matching the price query`,
       options
     ).toBe("Products found");
     expect(
@@ -243,12 +243,12 @@ describe("GET /api/v1/products with filters", () => {
     const res = await request(app).get("/api/v1/products").query(formData);
     expect(
       res.statusCode,
-      `When applying search and price filters, if there are products matching the search and price query, the status code should be "200". but it was ${res.statusCode}, update your code to return "200" when there are products matching the search and price query`,
+      `When applying search and price filters, if there are products matching the search and price query, the status code should be "200". but it was "${res.statusCode}", update your code to return "200" when there are products matching the search and price query`,
       options
     ).toBe(200);
     expect(
       res.body.message,
-      `When applying search and price filters, if there are products matching the search and price query, the message should be "Products found". but it was ${res.body.message}, update your code to return "Products found" when there are products matching the search and price query`,
+      `When applying search and price filters, if there are products matching the search and price query, the message should be "Products found". but it was "${res.body.message}", update your code to return "Products found" when there are products matching the search and price query`,
       options
     ).toBe("Products found");
     expect(

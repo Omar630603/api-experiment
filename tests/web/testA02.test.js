@@ -283,6 +283,31 @@ describe("Testing the products details page", () => {
       `http://localhost:${process.env.PORT}/products/delete/${product.slug}`
     );
   });
+
+  it("should don't go to the product's details page if the product does not exist", async () => {
+    await page.goto(
+      `http://localhost:${process.env.PORT}/products/show/123thisproductdoenotexist`
+    );
+
+    const title = await page.title();
+    expect(
+      title,
+      `The title for the web page "${title}" is wrong it should be "API-Experiment | Error" Make sure that the function handling the GET getProduct method return the error title if the product was not found`,
+      options
+    ).toBe("API-Experiment | Error");
+    const statusCode = await page.$eval(".title", (el) => el.textContent);
+    expect(
+      statusCode,
+      `The status code "${statusCode}" is wrong it should be "404" Make sure that the function handling the GET getProduct method return the error status code if the product was not found`,
+      options
+    ).toBe("404");
+    const message = await page.$eval(".message", (el) => el.textContent);
+    expect(
+      message,
+      `The message "${message}" is wrong it should be "No product found" Make sure that the function handling the GET getProduct method return the error message if the product was not found`,
+      options
+    ).toBe("No product found");
+  });
 });
 
 describe("Testing the product pages image snapshots", () => {

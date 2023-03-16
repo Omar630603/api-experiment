@@ -264,6 +264,44 @@ describe("Testing the create product page form submission", () => {
       options
     ).toBe("Updated description");
   });
+
+  it("should not update the product if the name is empty", async () => {
+    let nameInput = await page.$("#name");
+    await nameInput.click({ clickCount: 3 });
+    await nameInput.press("Backspace");
+    await page.click("form > button.btn.btn-primary");
+    const message = await page.$eval("p.message", (el) => el.textContent);
+    expect(
+      message,
+      `The message received "${message}" of the page is not correct, it should be "Please fill all fields". Change the message of the page to match the expected one. You can change it in the "controllers/web/product.controller.js" file.`,
+      options
+    ).toBe("Please fill all fields");
+  });
+
+  it("should don't update the product if the product does not exist", async () => {
+    await page.goto(
+      `http://localhost:${process.env.PORT}/products/update/123thisproductdoenotexist`
+    );
+
+    const title = await page.title();
+    expect(
+      title,
+      `The title for the web page "${title}" is wrong it should be "API-Experiment | Error" Make sure that the function handling the GET updateProduct method return the error title if the product was not found`,
+      options
+    ).toBe("API-Experiment | Error");
+    const statusCode = await page.$eval(".title", (el) => el.textContent);
+    expect(
+      statusCode,
+      `The status code "${statusCode}" is wrong it should be "404" Make sure that the function handling the GET updateProduct method return the error status code if the product was not found`,
+      options
+    ).toBe("404");
+    const message = await page.$eval(".message", (el) => el.textContent);
+    expect(
+      message,
+      `The message "${message}" is wrong it should be "No product found" Make sure that the function handling the GET updateProduct method return the error message if the product was not found`,
+      options
+    ).toBe("No product found");
+  });
 });
 
 describe("Testing the update product page image snapshot", () => {

@@ -36,7 +36,7 @@ describe("PATCH /api/v1/product/:slug", () => {
     });
     expect(
       res.statusCode,
-      `Expected status code 200, but got ${res.statusCode}, the status 200 means that the request has succeeded. Change it in the file "controllers/api/product.controller.js"`
+      `Expected status code 200, but got "${res.statusCode}", the status 200 means that the request has succeeded. Change it in the file "controllers/api/product.controller.js"`
     ).toBe(200);
     expect(
       res.body,
@@ -79,7 +79,7 @@ describe("PATCH /api/v1/product/:slug", () => {
     });
     expect(
       res.statusCode,
-      `Expected status code 404, but got ${res.statusCode}, the status 404 means that the server can not find the requested resource. Change it in the file "controllers/api/product.controller.js"`,
+      `Expected status code 404, but got "${res.statusCode}", the status 404 means that the server can not find the requested resource. Change it in the file "controllers/api/product.controller.js"`,
       options
     ).toBe(404);
 
@@ -105,7 +105,7 @@ describe("PATCH /api/v1/product/:slug", () => {
       });
       expect(
         res.statusCode,
-        `Expected status code "500", but got "${res.statusCode}", the "500" is the status code for "Internal Server Error" and it is the status code that we are expecting to get back from the server when we try to create a product without database connection.`,
+        `Expected status code "500", but got "${res.statusCode}", the "500" is the status code for "Internal Server Error" and it is the status code that we are expecting to get back from the server when we try to update a product without database connection.`,
         options
       ).toBe(500);
       await connectDB();
