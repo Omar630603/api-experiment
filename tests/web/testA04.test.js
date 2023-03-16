@@ -18,7 +18,7 @@ let product;
 
 beforeAll(async () => {
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     slowMo: 0,
     devtools: false,
     defaultViewport: {
