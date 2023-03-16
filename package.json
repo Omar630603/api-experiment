@@ -16,7 +16,7 @@
     "web-testA04": "cross-env NODE_ENV=test jest -i tests/web/testA04.test.js --testTimeout=20000",
     "api-testA05": "cross-env NODE_ENV=test jest -i tests/api/testA05.test.js --testTimeout=20000",
     "web-testA05": "cross-env NODE_ENV=test jest -i tests/web/testA05.test.js --testTimeout=20000",
-    "testAA": "cross-env NODE_ENV=test jest --testTimeout=40000 --detectOpenHandles"
+    "testAA": "cross-env NODE_ENV=test jest --testTimeout=40000 --silent --detectOpenHandles"
   },
   "jest": {
     "setupFilesAfterEnv": [
