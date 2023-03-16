@@ -102,8 +102,10 @@ const updateProduct = async (req, res) => {
       req.body.price === "" ||
       req.body.description === ""
     ) {
+      const product = await Product.findOne({ slug: req.params.slug });
       return res.render("products/update", {
         title: "API-Experiment | Update Product",
+        product: product,
         message: "Please fill all fields",
       });
     }
