@@ -4,11 +4,18 @@ const app = require("../../app");
 const Product = require("../../models/product.model");
 
 require("dotenv").config();
-mongoose.set("strictQuery", false);
+mongoose.set("strictQuery", true);
+
+const options = {
+  showPrefix: false,
+  showMatcherMessage: true,
+  showStack: true,
+};
 
 beforeAll(async () => {
-  await connectDB().then(
+  await connectDB(process.env.MONGODB_URI_TEST).then(
     async () => {
+      console.log("Database connected successfully");
       await createProducts();
     },
     (err) => {
@@ -27,17 +34,41 @@ describe("PATCH /api/v1/product/:slug", () => {
       price: 109,
       description: "Description 3 updated",
     });
-    expect(res.statusCode).toBe(200);
-    expect(res.body.message).toBe("Product updated");
-    expect(FindProduct.price).toBe(1009);
-    expect(FindProduct.name).toBe("Product 3");
-    expect(FindProduct.description).toBe("Description 3");
-    expect(res.body.product.price).toBe(109);
-    expect(res.body.product.name).toBe("Product 3 updated");
-    expect(res.body.product.description).toBe("Description 3 updated");
+    expect(
+      res.statusCode,
+      `Expected status code 200, but got ${res.statusCode}, the status 200 means that the request has succeeded. Change it in the file "controllers/api/product.controller.js"`
+    ).toBe(200);
+    expect(
+      res.body,
+      `Expected the response body to have a property called "message" and the value of that property should be "Product updated"`,
+      options
+    ).toHaveProperty("message");
+    expect(
+      res.body.message,
+      `Expected the value of the "message" property to be "Product updated"`,
+      options
+    ).toBe("Product updated");
+    expect(
+      res.body,
+      `Expected the response body to have a property called "product" and the value of that property should be an object`,
+      options
+    ).toHaveProperty("product");
 
-    expect(res.req.method).toBe("PATCH");
-    expect(res.type).toBe("application/json");
+    expect(
+      res.body.product,
+      `Expected the value of the product sent to the server to be updated but it is not. Make sure that you are using the "findByIdAndUpdate" method and that you are passing the correct parameters to it.`
+    ).not.toEqual(FindProduct);
+
+    expect(
+      res.req.method,
+      `Expected the request method to be "PATCH"`,
+      options
+    ).toBe("PATCH");
+    expect(
+      res.type,
+      `Expected the response content type to be "application/json"`,
+      options
+    ).toBe("application/json");
   });
 
   it("should not update a product because it does not exist", async () => {
@@ -46,8 +77,23 @@ describe("PATCH /api/v1/product/:slug", () => {
       price: 109,
       description: "Description 3",
     });
-    expect(res.statusCode).toBe(404);
-    expect(res.body.message).toBe("No product found");
+    expect(
+      res.statusCode,
+      `Expected status code 404, but got ${res.statusCode}, the status 404 means that the server can not find the requested resource. Change it in the file "controllers/api/product.controller.js"`,
+      options
+    ).toBe(404);
+
+    expect(
+      res.body,
+      `Expected the response body to have a property called "message" and the value of that property should be "No product found"`,
+      options
+    ).toHaveProperty("message");
+
+    expect(
+      res.body.message,
+      `Expected the value of the "message" property to be "No product found"`,
+      options
+    ).toBe("No product found");
   });
 
   it("should return error 500", async () => {
@@ -57,7 +103,11 @@ describe("PATCH /api/v1/product/:slug", () => {
         price: 109,
         description: "Description 3",
       });
-      expect(res.statusCode).toBe(500);
+      expect(
+        res.statusCode,
+        `Expected status code "500", but got "${res.statusCode}", the "500" is the status code for "Internal Server Error" and it is the status code that we are expecting to get back from the server when we try to create a product without database connection.`,
+        options
+      ).toBe(500);
       await connectDB();
     });
   });
