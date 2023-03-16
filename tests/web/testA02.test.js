@@ -80,6 +80,23 @@ describe("Testing the products page title and content", () => {
     ).toBe("Search");
   });
 
+  it("should have the correct form action and method", async () => {
+    const form = await page.$eval("form", (el) => ({
+      action: el.action,
+      method: el.method,
+    }));
+    expect(
+      form.action,
+      `The form action should be "http://localhost:${process.env.PORT}/products", but it has "${form.action}", You can change it in the "web/views/products/index.ejs" file.`,
+      options
+    ).toBe(`http://localhost:${process.env.PORT}/products`);
+    expect(
+      form.method,
+      `The form method should be "GET", but it has "${form.method}", You can change it in the "web/views/products/index.ejs" file.`,
+      options
+    ).toBe("get");
+  });
+
   it("should the right inputs names and types", async () => {
     const search_input = await page.$eval("#search", (el) => ({
       name: el.name,
@@ -326,6 +343,27 @@ describe("Testing the product pages image snapshots", () => {
       customDiffConfig: { threshold: 0.1 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "not-found-product-page",
+    });
+  });
+
+  it("should match no products found snapshot", async () => {
+    if (!fs.existsSync("tests/web/images/no-products-found-page.png")) {
+      throw new Error(
+        `The reference image for the no products found page does not exist, please import the image from the "tests/web/images/no-products-found-page.png"`
+      );
+    }
+
+    await page.goto(
+      `http://localhost:${process.env.PORT}/products?search=123ThisIsNotAProduct`
+    );
+    const image = await page.screenshot({ fullPage: true });
+    expect(
+      image,
+      `The image for the no products found page is wrong, it should be the same as the "tests/web/images/__diff_output__/no-products-found-page-diff.png" image`
+    ).toMatchImageSnapshot({
+      customDiffConfig: { threshold: 0.1 },
+      customSnapshotsDir: "tests/web/images",
+      customSnapshotIdentifier: "no-products-found-page",
     });
   });
 });
