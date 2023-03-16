@@ -56,8 +56,9 @@ describe("Testing the create product page title and content", () => {
     const title = await page.title();
     expect(
       title,
-      `The title received "${title}" of the page is not correct, it should be "API-Experiment | Create Product". Change the title of the page to match the expected one. You can change it in the "controllers/web/product.controller.js" file.`
-    ).toBe("API-Experiment | Create Product", options);
+      `The title received "${title}" of the page is not correct, it should be "API-Experiment | Create Product". Change the title of the page to match the expected one. You can change it in the "controllers/web/product.controller.js" file.`,
+      options
+    ).toBe("API-Experiment | Create Product");
   });
 
   it("should have the correct content title and description", async () => {
