@@ -32,7 +32,6 @@ const getProduct = async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug })
     .lean()
     .exec();
-
   if (product === null) {
     const error = { status: 404, message: "No product found" };
     return res.render("error", { title: "API-Experiment | Error", error });
@@ -92,6 +91,10 @@ const updateProduct = async (req, res) => {
     const product = await Product.findOne({ slug: req.params.slug })
       .lean()
       .exec();
+    if (product === null) {
+      const error = { status: 404, message: "No product found" };
+      return res.render("error", { title: "API-Experiment | Error", error });
+    }
     return res.render("products/update", {
       title: "API-Experiment | Update Product",
       product,
@@ -122,10 +125,10 @@ const updateProduct = async (req, res) => {
 
     if (product === null) {
       const error = { status: 404, message: "No product found" };
-      return res.render("error", { error });
+      return res.render("error", { title: "API-Experiment | Error", error });
     }
 
-    req.query.message = "Product updated";
+    req.query.message = "Product updated successfully";
     return await getProduct(req, res);
   }
 };

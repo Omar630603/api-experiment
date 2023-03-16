@@ -5,4 +5,4 @@ coverage
 .nyc
 .env
 .DS_Store
-tests/images/__diff_output__
+tests/web/images/__diff_output__
