@@ -62,7 +62,7 @@ const createProduct = async (req, res) => {
       description: req.body.description,
     });
 
-    return res.status(200).json({ product, message: "Product created" });
+    return res.status(201).json({ product, message: "Product created" });
   } catch (error) {
     return res.status(500).json(error);
   }
