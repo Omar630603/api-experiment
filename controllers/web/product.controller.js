@@ -128,7 +128,7 @@ const updateProduct = async (req, res) => {
       return res.render("error", { title: "API-Experiment | Error", error });
     }
 
-    req.query.message = "Product updated successfully";
+    req.query.message = "Product updated";
     return await getProduct(req, res);
   }
 };
