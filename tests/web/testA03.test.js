@@ -203,7 +203,7 @@ describe("Testing the create product page form submission", () => {
     );
     expect(
       newProduct,
-      `The test product created sames to be not in the table of products, make sure that the product after being created is added to the table of products. You can change it in the "controllers/web/product.controller.js" file.`
+      `The test product created seems to be not in the table of products, make sure that the product after being created is added to the table of products. You can change it in the "controllers/web/product.controller.js" file.`
     ).toEqual({
       name: "Test Product",
       price: "$100",
