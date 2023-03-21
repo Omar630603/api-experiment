@@ -32,18 +32,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await page.goto(`http://localhost:${process.env.PORT}/products`);
-  await page.click("tbody tr:first-child a");
-  const url = await page.url();
-  const slug = url.split("/show/").pop();
-  product = initial_data.find((product) => product.slug === slug);
-
-  await page.goto(
-    `http://localhost:${process.env.PORT}/products/update/${slug}`
-  );
-});
-
-afterAll(async () => {
   mongoose.set("strictQuery", true);
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -57,6 +45,19 @@ afterAll(async () => {
   });
   await mongoose.connection.collection("products").insertMany(initial_data);
   await mongoose.connection.close();
+
+  await page.goto(`http://localhost:${process.env.PORT}/products`);
+  await page.click("tbody tr:first-child a");
+  const url = await page.url();
+  const slug = url.split("/show/").pop();
+  product = initial_data.find((product) => product.slug === slug);
+
+  await page.goto(
+    `http://localhost:${process.env.PORT}/products/update/${slug}`
+  );
+});
+
+afterAll(async () => {
   await browser.close();
 });
 
@@ -226,7 +227,7 @@ describe("Testing the create product page form submission", () => {
     const url = await page.url();
     expect(
       url,
-      `The page url should be "http://localhost:${process.env.PORT}/products/update/${product.slug}", but it has "${url}", You can change it in the "web/controllers/products.js" file.`,
+      `The page url should be "http://localhost:${process.env.PORT}/products/update/${product.slug}", but it has "${url}", You can change it in the "controllers/web/products.controller.js" file.`,
       options
     ).toBe(
       `http://localhost:${process.env.PORT}/products/update/${product.slug}`
@@ -234,7 +235,7 @@ describe("Testing the create product page form submission", () => {
     const message = await page.$eval("p.message", (el) => el.textContent);
     expect(
       message,
-      `The message should be "Product updated", but it has "${message}", You can change it in the "web/controllers/products.js" file.`,
+      `The message should be "Product updated", but it has "${message}", You can change it in the "controllers/web/products.controller.js" file.`,
       options
     ).toBe("Product updated");
 
@@ -250,17 +251,17 @@ describe("Testing the create product page form submission", () => {
 
     expect(
       productName,
-      `The product after updated should have the new updated name, but it has "${productName}", You can change the update method in the "web/controllers/products.js" file.`,
+      `The product after updated should have the new updated name, but it has "${productName}", You can change the update method in the "controllers/web/products.controller.js" file.`,
       options
     ).toBe("Updated product");
     expect(
       productPrice,
-      `The product after updated should have the new updated price, but it has "${productPrice}", You can change the update method in the "web/controllers/products.js" file.`,
+      `The product after updated should have the new updated price, but it has "${productPrice}", You can change the update method in the "controllers/web/products.controller.js" file.`,
       options
     ).toBe("$99");
     expect(
       productDescription,
-      `The product after updated should have the new updated description, but it has "${productDescription}", You can change the update method in the "web/controllers/products.js" file.`,
+      `The product after updated should have the new updated description, but it has "${productDescription}", You can change the update method in the "controllers/web/products.controller.js" file.`,
       options
     ).toBe("Updated description");
   });

@@ -32,14 +32,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await page.goto(`http://localhost:${process.env.PORT}/products`);
-  await page.click("tbody tr:first-child a");
-  const url = await page.url();
-  const slug = url.split("/show/").pop();
-  product = initial_data.find((product) => product.slug === slug);
-});
-
-afterAll(async () => {
   mongoose.set("strictQuery", true);
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -53,6 +45,15 @@ afterAll(async () => {
   });
   await mongoose.connection.collection("products").insertMany(initial_data);
   await mongoose.connection.close();
+
+  await page.goto(`http://localhost:${process.env.PORT}/products`);
+  await page.click("tbody tr:first-child a");
+  const url = await page.url();
+  const slug = url.split("/show/").pop();
+  product = initial_data.find((product) => product.slug === slug);
+});
+
+afterAll(async () => {
   await browser.close();
 });
 

@@ -32,9 +32,6 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await page.goto(`http://localhost:${process.env.PORT}/products/create`);
-});
-
-afterAll(async () => {
   mongoose.set("strictQuery", true);
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -48,6 +45,9 @@ afterAll(async () => {
   });
   await mongoose.connection.collection("products").insertMany(initial_data);
   await mongoose.connection.close();
+});
+
+afterAll(async () => {
   await browser.close();
 });
 
