@@ -1,6 +1,6 @@
 # API-Experiment
 
-This is an API project using NodeJS, ExpressJS, and MongoDB. The goal of this project is to try testing API endpoints using Jest and Supertest.
+This is an API and web project using NodeJS, ExpressJS, and MongoDB. The goal of this project is to try testing API endpoints and Web pages using Jest, Supertest, and Puppeteer.
 
 # Features
 
@@ -30,23 +30,37 @@ Start for production
 
 Run tests
 
-    npm run testA01
-    npm run testA02
-    npm run testA03
-    npm run testA04
-    npm run testA05
+    npm run api-testA01
+    npm run web-testA01
+    npm run api-testA02
+    npm run web-testA02
+    npm run api-testA03
+    npm run web-testA03
+    npm run api-testA04
+    npm run web-testA04
+    npm run api-testA05
+    npm run web-testA05
     npm run testAA
-
 
     A is the project name, and the number is the test number.
     The AA test is to test all the suits in the project.
 
 The project can be tested using Postman to check the endpoints.
 
-The endpoints are:
+The API endpoints are:
 
-- GET /api/v1/products
-- GET /api/v1/products/:slug
-- POST /api/v1/products
-- PATCH /api/v1/products/:slug
-- DELETE /api/v1/products/:slug
+- GET /api/v1/products -> Fetch all products
+- GET /api/v1/products/:slug -> Fetch a single product
+- POST /api/v1/products -> Create a product
+- PATCH /api/v1/products/:slug -> Update a product
+- DELETE /api/v1/products/:slug -> Delete a product
+
+The Web routes are:
+
+- GET /products -> Show all products
+- GET /products/:slug -> Show a single product
+- GET /products/create -> Show the create product page
+- POST /products/create -> Create a product
+- GET /products/update/:slug -> Show the update product page
+- POST /products/update/:slug -> Update a product
+- POST /products/delete/:slug -> Delete a product
