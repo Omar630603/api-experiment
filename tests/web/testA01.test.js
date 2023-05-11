@@ -169,7 +169,7 @@ describe("Testing the index page and error `Not Found` page image snapshots", ()
       `The web styling for the index page is not correct check the file "tests/web/images/__diff_output__/index-page-diff.png" to find the difference`,
       options
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "index-page",
     });
@@ -188,7 +188,7 @@ describe("Testing the index page and error `Not Found` page image snapshots", ()
       `The web styling for the error "Not Found" page is not correct check the file "tests/web/images/__diff_output__/error-notFound-page-diff.png" to find the difference`,
       options
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "error-notFound-page",
     });

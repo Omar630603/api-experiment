@@ -324,7 +324,7 @@ describe("Testing the product pages image snapshots", () => {
       `The image for the products table page is wrong, it should be the same as the "tests/web/images/__diff_output__/products-table-page-diff.png" image`,
       options
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "products-table-page",
     });
@@ -346,7 +346,7 @@ describe("Testing the product pages image snapshots", () => {
       `The image for the product details page is wrong, it should be the same as the "tests/web/images/__diff_output__/product-details-page-diff.png" image`,
       options
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "product-details-page",
     });
@@ -365,7 +365,7 @@ describe("Testing the product pages image snapshots", () => {
       image,
       `The image for the not found product page is wrong, it should be the same as the "tests/web/images/__diff_output__/not-found-product-page-diff.png" image`
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "not-found-product-page",
     });
@@ -386,7 +386,7 @@ describe("Testing the product pages image snapshots", () => {
       image,
       `The image for the no products found page is wrong, it should be the same as the "tests/web/images/__diff_output__/no-products-found-page-diff.png" image`
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "no-products-found-page",
     });

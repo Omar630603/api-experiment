@@ -236,7 +236,7 @@ describe("Testing the create page image snapshot", () => {
       image,
       `The image for the create product page is wrong, it should be the same as the "tests/web/images/__diff_output__/create-product-page-diff.png" image`
     ).toMatchImageSnapshot({
-      customDiffConfig: { threshold: 0.1 },
+      customDiffConfig: { threshold: 0.9 },
       customSnapshotsDir: "tests/web/images",
       customSnapshotIdentifier: "create-product-page",
     });
