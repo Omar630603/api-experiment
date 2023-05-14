@@ -60,6 +60,7 @@ afterAll(async () => {
 describe("Testing the delete form in the details page", () => {
   it("should delete a product", async () => {
     await page.click("form > button.btn");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const url = await page.url();
     expect(
       url,
